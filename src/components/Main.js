@@ -1,19 +1,12 @@
 import React from 'react';
-import './index.css';
-import Logo from './components/Logo';
+import '../index.css';
 
-function App() {
-  return (
-    <div className="App">
-      <div className="body">
-    <div className="root">
-        <header className="header root__section">
-            <Logo alt='Логотип' />
-        </header>
+function Main({src}) {
+    return (
         <main className="content">
             <section className="profile root__section">
                 <div className="profile__image">
-                    <img src="./images/avatar.jpg" alt="Аватарка" className="profile__avatar" />
+                    <img src={src} alt="Аватарка" className="profile__avatar" />
                 </div>
                 <div className="profile__info">
                     <div className="profile__name-section">
@@ -114,13 +107,7 @@ function App() {
             </div>
 
         </main>
-        <footer className="footer root__section">
-            <p className="footer__copirate">&copy; 2021 Mesto Russia</p>
-        </footer>
-    </div>
-</div>
-    </div>
-  );
+    );
 }
 
-export default App;
+export default Main;
