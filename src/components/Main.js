@@ -2,20 +2,63 @@ import React from 'react';
 import '../index.css';
 
 function Main({src}) {
+    
+    function handleEditProfileClick() {
+        const popupButtonProfile = document.querySelector('.profile__edit-button');
+        const popupButtonProfileClose = document.querySelector('.popup__button-close_profile');
+        const popupProfile = document.querySelector('.popup_edit-profile');
+
+        popupButtonProfile.addEventListener('click', () => {
+            popupProfile.classList.add('popup_is-opened');
+        });
+
+        popupButtonProfileClose.addEventListener('click', () => {
+            popupProfile.classList.remove('popup_is-opened');
+        });
+    }
+
+    function handleEditAvatarClick() {
+        const popupButtonAvatar = document.querySelector('.profile__avatar');
+        const popupButtonAvatarClose = document.querySelector('.popup__button-close_update-avatar');
+        const popupAvatar = document.querySelector('.popup_update-avatar');
+
+        popupButtonAvatar.addEventListener('click', () => {
+            popupAvatar.classList.add('popup_is-opened');
+        });
+
+        popupButtonAvatarClose.addEventListener('click', () => {
+            popupAvatar.classList.remove('popup_is-opened');
+        });
+    }
+
+    function handleAddPlaceClick() {
+        const popupButtonProfileAdd = document.querySelector('.profile__add-button');
+        const popupButtonProfileClose = document.querySelector('.popup__button-close_add');
+        const popupProfileAdd = document.querySelector('.popup_add');
+
+        popupButtonProfileAdd.addEventListener('click', () => {
+            popupProfileAdd.classList.add('popup_is-opened');
+        });
+
+        popupButtonProfileClose.addEventListener('click', () => {
+            popupProfileAdd.classList.remove('popup_is-opened');
+        });
+    }
+
     return (
         <main className="content">
             <section className="profile root__section">
                 <div className="profile__image">
-                    <img src={src} alt="Аватарка" className="profile__avatar" />
+                    <img src={src} alt="Аватарка" className="profile__avatar" onClick={handleEditAvatarClick} />
                 </div>
                 <div className="profile__info">
                     <div className="profile__name-section">
                         <h1 className="profile__name">Жак-Ив Кусто</h1>
-                        <button type="button" aria-label="Редактировать профиль" className="profile__edit-button"></button>
+                        <button type="button" aria-label="Редактировать профиль" className="profile__edit-button" onClick={handleEditProfileClick}></button>
                     </div>
                     <p className="profile__profession">Исследователь океана</p>
                 </div>
-                <button type="button" aria-label="Добавить новое место" className="profile__add-button"></button>
+                <button type="button" aria-label="Добавить новое место" className="profile__add-button" onClick={handleAddPlaceClick}></button>
             </section>
 
             <section className="elements">
@@ -73,7 +116,7 @@ function Main({src}) {
                             maxlength="200" required />
                         <span className="jobInput-error popup__error"></span>
                         <button type="submit" className="popup__button">Сохранить</button>
-                        <button type="button" aria-label="Закрыть" className="popup__button-close"></button>
+                        <button type="button" aria-label="Закрыть" className="popup__button-close popup__button-close_profile"></button>
                     </form>
                 </div>
             </div>
