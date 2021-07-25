@@ -1,20 +1,35 @@
 import avatar from '../images/avatar.jpg'
 
 function Main() {
+    function handleEditAvatarClick() {
+        const avatarPopup = document.querySelector('.popup_update-avatar');
+        avatarPopup.classList.add('popup_is-opened');
+    }
+
+    function handleEditProfileClick() {
+        const profilePopup = document.querySelector('.popup_edit-profile');
+        profilePopup.classList.add('popup_is-opened');
+    }
+
+    function handleAddPlaceClick() {
+        const addPlacePopup = document.querySelector('.popup_add');
+        addPlacePopup.classList.add('popup_is-opened');
+    }
+
     return (
         <main className="content">
         <section className="profile root__section">
             <div className="profile__image">
-                <img src={avatar} alt="Аватарка" className="profile__avatar"/>
+                <img onClick={handleEditAvatarClick} src={avatar} alt="Аватарка" className="profile__avatar"/>
             </div>
             <div className="profile__info">
                 <div className="profile__name-section">
                     <h1 className="profile__name">Жак-Ив Кусто</h1>
-                    <button type="button" aria-label="Редактировать профиль" className="profile__edit-button"></button>
+                    <button onClick={handleEditProfileClick} type="button" aria-label="Редактировать профиль" className="profile__edit-button"></button>
                 </div>
                 <p className="profile__profession">Исследователь океана</p>
             </div>
-            <button type="button" aria-label="Добавить новое место" className="profile__add-button"></button>
+            <button onClick={handleAddPlaceClick} type="button" aria-label="Добавить новое место" className="profile__add-button"></button>
         </section>
 
         <section className="elements">
