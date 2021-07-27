@@ -11,11 +11,11 @@ function PopupEditProfile(props) {
             buttonText="Сохранить"
         >
             <input type="text" name="name" id="nameInput" value="Жак-Ив Кусто" placeholder="Имя"
-                className="popup__input popup__input_name" minlength="2" maxlength="40" required />
+                className="popup__input popup__input_name" minLength="2" maxLength="40" required />
             <span className="nameInput-error popup__error"></span>
             <input type="text" name="about" id="jobInput" value="Исследователь океана"
-                placeholder="Вид деятельности" className="popup__input popup__input_job" minlength="2"
-                maxlength="200" required />
+                placeholder="Вид деятельности" className="popup__input popup__input_job" minLength="2"
+                maxLength="200" required />
             <span className="jobInput-error popup__error"></span>
         </PopupWithForm>
     );

@@ -5,7 +5,6 @@ import Footer from './Footer.js'
 import PopupEditAvatar from './PopupEditAvatar.js'
 import PopupEditProfile from './PopupEditProfile.js'
 import PopupAddPlace from './PopupAddPlace.js'
-import { func } from 'prop-types'
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);

@@ -1,19 +1,35 @@
 import React from 'react';
 import avatar from '../images/avatar.jpg'
+import api from './utils/api'
 
 function Main(props) {
+    const [userName, setUserName] = React.useState();
+    const [userDescription, setUserDescription] = React.useState();
+    const [userAvatar, setUserAvatar] = React.useState();
+
+    React.useEffect(() => {
+        api
+        .editAvatar()
+        .then((res) => {
+            setUserAvatar(res);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }, []);
+
     return (
         <main className="content">
         <section className="profile root__section">
             <div className="profile__image">
-                <img onClick={props.onEditAvatar} src={avatar} alt="Аватарка" className="profile__avatar"/>
+                <img onClick={props.onEditAvatar} style={{ backgroundImage: `url(${userAvatar})` }} alt="Аватарка" className="profile__avatar"/>
             </div>
             <div className="profile__info">
                 <div className="profile__name-section">
-                    <h1 className="profile__name">Жак-Ив Кусто</h1>
+                    <h1 className="profile__name">{userName}</h1>
                     <button onClick={props.onEditProfile} type="button" aria-label="Редактировать профиль" className="profile__edit-button"></button>
                 </div>
-                <p className="profile__profession">Исследователь океана</p>
+                <p className="profile__profession">{userDescription}</p>
             </div>
             <button onClick={props.onAddPlace} type="button" aria-label="Добавить новое место" className="profile__add-button"></button>
         </section>
