@@ -1,28 +1,42 @@
 import React from 'react';
-import avatar from '../images/avatar.jpg'
-import api from './utils/api'
+import api from './utils/Api.js'
 
 function Main(props) {
     const [userName, setUserName] = React.useState();
     const [userDescription, setUserDescription] = React.useState();
     const [userAvatar, setUserAvatar] = React.useState();
+    const [cards, setCards] = React.useState([]);
 
     React.useEffect(() => {
         api
-        .editAvatar()
+            .getUserInfo()
+            .then((res) => {
+                setUserName(res.name);
+                setUserDescription(res.about);
+                setUserAvatar(res.avatar);
+            })
+            .catch((err) => {
+                console.log(`Не получилось, вот такая ошибка: ${err}`);
+              });
+    }, []);
+
+    React.useEffect(() => {
+        api
+        .getAllCards()
         .then((res) => {
-            setUserAvatar(res);
+            console.log(res);
+            setCards(res);
         })
         .catch((err) => {
-            console.log(err);
-        });
+            console.log(`Карточки не загружены, ошибка: ${err}`);
+        })
     }, []);
 
     return (
         <main className="content">
         <section className="profile root__section">
             <div className="profile__image">
-                <img onClick={props.onEditAvatar} style={{ backgroundImage: `url(${userAvatar})` }} alt="Аватарка" className="profile__avatar"/>
+                <img onClick={props.onEditAvatar} style={{ backgroundImage: `url(${userAvatar})` }} src={userAvatar} alt="Аватарка" className="profile__avatar"/>
             </div>
             <div className="profile__info">
                 <div className="profile__name-section">
@@ -35,24 +49,22 @@ function Main(props) {
         </section>
 
         <section className="elements">
-            <ul className="elements__content root__section"></ul>
-        </section>
-
-        <template className="template">
-            <li className="template__card card">
+            <ul className="elements__content root__section">{cards.map((card) => (
+            <li className="template__card card" key={card.id}>
                 <div className="elements__element">
                     <button type="button" className="elements__delete"></button>
-                    <img src="#" alt="Домбай" className="elements__image"/>
+                    <img src={card.link} style={{ backgroundImage: `url(${card.link})` }} alt={card.name} className="elements__image"/>
                     <div className="elements__title">
-                        <h2 className="elements__caption"></h2>
+                        <h2 className="elements__caption">{card.name}</h2>
                         <div className="elements__like-box">
                             <button type="button" className="elements__like"></button>
-                            <span className="elements__like-count">0</span>
+                            <span className="elements__like-count">{card.likes.length}</span>
                         </div>
                     </div>
                 </div>
             </li>
-        </template>
+        ))}</ul>
+        </section>
 
     </main>
     );
