@@ -1,5 +1,5 @@
 import React from 'react'
-import api from './utils/Api.js'
+import api from '../utils/Api.js'
 import Card from './Card.js'
 
 function Main(props) {
@@ -36,7 +36,7 @@ function Main(props) {
         <main className="content">
             <section className="profile root__section">
                 <div className="profile__image">
-                    <img onClick={props.onEditAvatar} style={{ backgroundImage: `url(${userAvatar})` }} src={userAvatar} alt="Аватарка" className="profile__avatar" />
+                    <img onClick={props.onEditAvatar} src={userAvatar} alt="Аватарка" className="profile__avatar" />
                 </div>
                 <div className="profile__info">
                     <div className="profile__name-section">

@@ -4,10 +4,10 @@ function Card(card) {
     }
 
     return (
-        <li className="template__card card" key={card._id}>
+        <li className="template__card card">
             <div className="elements__element">
                 <button type="button" className="elements__delete"></button>
-                <img onClick={handleClick} src={card.link} style={{ backgroundImage: `url(${card.link})` }} alt={card.name} className="elements__image" />
+                <img onClick={handleClick} src={card.link} alt={card.name} className="elements__image" />
                 <div className="elements__title">
                     <h2 className="elements__caption">{card.name}</h2>
                     <div className="elements__like-box">

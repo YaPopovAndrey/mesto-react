@@ -39,7 +39,6 @@ function handleCardClick(data) {
 }
 
   return (
-      <body className="body">
     <div className="root">
         <Header />
         <Main 
@@ -67,7 +66,6 @@ function handleCardClick(data) {
         />
         <Footer />
     </div>
-</body>
   );
 }
 
