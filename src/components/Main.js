@@ -1,25 +1,11 @@
 import React from 'react'
 import api from '../utils/Api.js'
 import Card from './Card.js'
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js'
 
 function Main(props) {
-    const [userName, setUserName] = React.useState();
-    const [userDescription, setUserDescription] = React.useState();
-    const [userAvatar, setUserAvatar] = React.useState();
+    const currentUser = React.useContext(CurrentUserContext);
     const [cards, setCards] = React.useState([]);
-
-    React.useEffect(() => {
-        api
-            .getUserInfo()
-            .then((res) => {
-                setUserName(res.name);
-                setUserDescription(res.about);
-                setUserAvatar(res.avatar);
-            })
-            .catch((err) => {
-                console.log(`Не получилось, ошибка: ${err}`);
-            });
-    }, []);
 
     React.useEffect(() => {
         api
@@ -36,14 +22,14 @@ function Main(props) {
         <main className="content">
             <section className="profile root__section">
                 <div className="profile__image">
-                    <img onClick={props.onEditAvatar} src={userAvatar} alt="Аватарка" className="profile__avatar" />
+                    <img onClick={props.onEditAvatar} src={currentUser.avatar} alt="Аватарка" className="profile__avatar" />
                 </div>
                 <div className="profile__info">
                     <div className="profile__name-section">
-                        <h1 className="profile__name">{userName}</h1>
+                        <h1 className="profile__name">{currentUser.name}</h1>
                         <button onClick={props.onEditProfile} type="button" aria-label="Редактировать профиль" className="profile__edit-button"></button>
                     </div>
-                    <p className="profile__profession">{userDescription}</p>
+                    <p className="profile__profession">{currentUser.about}</p>
                 </div>
                 <button onClick={props.onAddPlace} type="button" aria-label="Добавить новое место" className="profile__add-button"></button>
             </section>
