@@ -3,9 +3,9 @@ import api from '../utils/Api.js'
 import Header from './Header.js'
 import Main from './Main.js'
 import Footer from './Footer.js'
-import PopupEditAvatar from './PopupEditAvatar.js'
-import PopupEditProfile from './PopupEditProfile.js'
-import PopupAddPlace from './PopupAddPlace.js'
+import EditAvatarPopup from './EditAvatarPopup.js'
+import EditProfilePopup from './EditProfilePopup.js'
+import AddPlacePopup from './AddPlacePopup.js'
 import ImagePopup from './ImagePopup.js'
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js'
 
@@ -20,33 +20,33 @@ function App() {
 
   React.useEffect(() => {
     api
-        .getUserInfo()
-        .then((res) => {
-          setCurrentUser(res);
-        })
-        .catch((err) => {
-            console.log(`Не получилось, ошибка: ${err}`);
-        });
-}, []);
+      .getUserInfo()
+      .then((res) => {
+        setCurrentUser(res);
+      })
+      .catch((err) => {
+        console.log(`Не получилось, ошибка: ${err}`);
+      });
+  }, []);
 
-    React.useEffect(() => {
-        api
-            .getAllCards()
-            .then((res) => {
-                setCards(res);
-            })
-            .catch((err) => {
-                console.log(`Карточки не загружены, ошибка: ${err}`);
-            })
-    }, []);
+  React.useEffect(() => {
+    api
+      .getAllCards()
+      .then((res) => {
+        setCards(res);
+      })
+      .catch((err) => {
+        console.log(`Карточки не загружены, ошибка: ${err}`);
+      })
+  }, []);
 
-    function handleCardLike(card) {
-      const isLiked = card.data.likes.some(i => i._id === currentUser._id);
-      
-      api
+  function handleCardLike(card) {
+    const isLiked = card.data.likes.some(i => i._id === currentUser._id);
+
+    api
       .like(card.data._id, !isLiked)
       .then((newCard) => {
-          setCards((state) => state.map((c) => c._id === card.data._id ? newCard : c));
+        setCards((state) => state.map((c) => c._id === card.data._id ? newCard : c));
       });
   }
 
@@ -60,66 +60,117 @@ function App() {
         setCards(newCards);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(`Не получилось, ошибка: ${err}`);
       });
   }
 
-function handleEditAvatarClick() {
+  React.useEffect(() => {
+    api
+      .getUserInfo()
+      .then((result) => {
+        setCurrentUser(result);
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(`Не получилось, ошибка: ${err}`);
+      });
+  }, []);
+
+  function handleUpdateUser(opt) {
+    api
+      .editUserInfo(opt)
+      .then((result) => {
+        setCurrentUser(result);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Не получилось, ошибка: ${err}`);
+      });
+  }
+
+  function handleUpdateAvatar(opt) {
+    api
+      .editAvatar(opt)
+      .then((result) => {
+        setCurrentUser(result);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Не получилось, ошибка: ${err}`);
+      });
+  }
+
+  function setNewCard(opt) {
+    api
+      .addNewCard(opt)
+      .then((res) => {
+        setCards([res, ...cards]);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Не получилось, ошибка: ${err}`);
+      });
+  }
+
+  function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
-}
+  }
 
-function handleEditProfileClick() {
-  setIsEditProfilePopupOpen(true);
-}
+  function handleEditProfileClick() {
+    setIsEditProfilePopupOpen(true);
+  }
 
-function handleAddPlaceClick() {
-  setIsAddPlacePopupOpen(true);
-}
+  function handleAddPlaceClick() {
+    setIsAddPlacePopupOpen(true);
+  }
 
-function closeAllPopups() {
-  setIsEditAvatarPopupOpen(false);
-  setIsEditProfilePopupOpen(false);
-  setIsAddPlacePopupOpen(false);
-  setIsImagePopupOpen(false);
-}
+  function closeAllPopups() {
+    setIsEditAvatarPopupOpen(false);
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setIsImagePopupOpen(false);
+  }
 
-function handleCardClick(data) {
-  setIsImagePopupOpen(true);
-  setSelectedCard(data);
-}
+  function handleCardClick(data) {
+    setIsImagePopupOpen(true);
+    setSelectedCard(data);
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-    <div className="root">
+      <div className="root">
         <Header />
-        <Main 
-        onCardClick={handleCardClick}
-        onEditProfile={handleEditProfileClick}
-        onAddPlace={handleAddPlaceClick}
-        onEditAvatar={handleEditAvatarClick}
-        cards={cards}
-        onCardLike={handleCardLike}
-        onCardDelete={handleCardDelete}
+        <Main
+          onCardClick={handleCardClick}
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onEditAvatar={handleEditAvatarClick}
+          cards={cards}
+          onCardLike={handleCardLike}
+          onCardDelete={handleCardDelete}
         />
-        <PopupEditAvatar 
-        isOpen={isEditAvatarPopupOpen}
-        onClose={closeAllPopups}
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar}
         />
-        <PopupEditProfile 
-        isOpen={isEditProfilePopupOpen}
-        onClose={closeAllPopups}
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
         />
-        <PopupAddPlace 
-        isOpen={isAddPlacePopupOpen}
-        onClose={closeAllPopups}
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopups}
+          setNewCard={setNewCard}
         />
         <ImagePopup
-        isOpen={isImagePopupOpen}
-        onClose={closeAllPopups}
-        data={selectedCard}
+          isOpen={isImagePopupOpen}
+          onClose={closeAllPopups}
+          data={selectedCard}
         />
         <Footer />
-    </div>
+      </div>
     </CurrentUserContext.Provider>
   );
 }
