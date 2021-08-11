@@ -1,22 +1,9 @@
 import React from 'react'
-import api from '../utils/Api.js'
 import Card from './Card.js'
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js'
 
 function Main(props) {
     const currentUser = React.useContext(CurrentUserContext);
-    const [cards, setCards] = React.useState([]);
-
-    React.useEffect(() => {
-        api
-            .getAllCards()
-            .then((res) => {
-                setCards(res);
-            })
-            .catch((err) => {
-                console.log(`Карточки не загружены, ошибка: ${err}`);
-            })
-    }, []);
 
     return (
         <main className="content">
@@ -36,7 +23,7 @@ function Main(props) {
 
             <section className="elements">
                 <ul className="elements__content root__section">
-                    {cards.map((card) => (
+                    {props.cards.map((card) => (
                         <Card
                             data={card}
                             key={card._id}
@@ -44,6 +31,8 @@ function Main(props) {
                             name={card.name}
                             likes={card.likes.length}
                             onCardClick={props.onCardClick}
+                            onCardLike={props.onCardLike}
+                            onCardDelete={props.onCardDelete}
                         />
                     ))}
                 </ul>
