@@ -8,7 +8,7 @@ function EditProfilePopup(props) {
     React.useEffect(() => {
         setName(currentUser.name);
         setDescription(currentUser.about);
-    }, [currentUser]);
+    }, [currentUser, props.isOpen]);
 
     const [name, setName] = React.useState("");
     const [description, setDescription] = React.useState("");
@@ -28,30 +28,20 @@ function EditProfilePopup(props) {
           about: description,
         });
       }
-    
-      function onClose() {
-        props.onClose();
-        resetInputPopupAdd();
-      }
-    
-      function resetInputPopupAdd() {
-        setName(currentUser.name);
-        setDescription(currentUser.about);
-      }
 
     return (
         <PopupWithForm
             isOpen={props.isOpen}
-            onClose={onClose}
+            onClose={props.onClose}
             onSubmit={handleSubmit}
             name="edit-profile"
             title="Редактировать профиль"
             buttonText="Сохранить"
         >
-            <input onChange={handleChangeName} type="text" name="name" id="nameInput" value={name} placeholder="Имя"
+            <input onChange={handleChangeName} type="text" name="name" id="nameInput" value={name || ''} placeholder="Имя"
                 className="popup__input popup__input_name" minLength={2} maxLength={40} required />
             <span className="nameInput-error popup__error"></span>
-            <input onChange={handleChangeDescription} type="text" name="about" id="jobInput" value={description}
+            <input onChange={handleChangeDescription} type="text" name="about" id="jobInput" value={description || ''}
                 placeholder="Вид деятельности" className="popup__input popup__input_job" minLength={2}
                 maxLength={200} required />
             <span className="jobInput-error popup__error"></span>

@@ -47,7 +47,10 @@ function App() {
       .like(card.data._id, !isLiked)
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card.data._id ? newCard : c));
-      });
+      })
+      .catch((err) => { 
+        console.log(`Ошибка: ${err}`); 
+      })
   }
 
   function handleCardDelete(card) {
@@ -68,7 +71,7 @@ function App() {
     api
       .getUserInfo()
       .then((result) => {
-        helpSetCurrentUser(result);
+        setCurrentUser(result);
       })
       .catch((err) => {
         console.log(`Не получилось, ошибка: ${err}`);
@@ -79,7 +82,7 @@ function App() {
     api
       .editUserInfo(userData)
       .then((result) => {
-        helpSetCurrentUser(result);
+        setCurrentUser(result);
         closeAllPopups();
       })
       .catch((err) => {
@@ -91,21 +94,12 @@ function App() {
     api
       .editAvatar(opt)
       .then((result) => {
-        helpSetCurrentUser(result);
+        setCurrentUser(result);
         closeAllPopups();
       })
       .catch((err) => {
         console.log(`Не получилось, ошибка: ${err}`);
       });
-  }
-
-  function helpSetCurrentUser(result) {
-    setCurrentUser({
-      name: result.name,
-      about: result.about,
-      avatar: result.avatar,
-      _id: result._id,
-    });
   }
 
   function setNewCard(opt) {
