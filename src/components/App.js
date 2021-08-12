@@ -68,19 +68,18 @@ function App() {
     api
       .getUserInfo()
       .then((result) => {
-        setCurrentUser(result);
-        console.log(result);
+        helpSetCurrentUser(result);
       })
       .catch((err) => {
         console.log(`Не получилось, ошибка: ${err}`);
       });
   }, []);
 
-  function handleUpdateUser(opt) {
+  function handleUpdateUser(userData) {
     api
-      .editUserInfo(opt)
+      .editUserInfo(userData)
       .then((result) => {
-        setCurrentUser(result);
+        helpSetCurrentUser(result);
         closeAllPopups();
       })
       .catch((err) => {
@@ -92,12 +91,21 @@ function App() {
     api
       .editAvatar(opt)
       .then((result) => {
-        setCurrentUser(result);
+        helpSetCurrentUser(result);
         closeAllPopups();
       })
       .catch((err) => {
         console.log(`Не получилось, ошибка: ${err}`);
       });
+  }
+
+  function helpSetCurrentUser(result) {
+    setCurrentUser({
+      name: result.name,
+      about: result.about,
+      avatar: result.avatar,
+      _id: result._id,
+    });
   }
 
   function setNewCard(opt) {
